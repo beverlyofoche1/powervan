@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Now - Get a Van</title>
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
+  <style>
+    /* Add your CSS styles here */
+    body {
+      font-family: Arial, sans-serif;
+    }
+    form {
+      max-width: 600px;
+      margin: auto;
+    }
+    label, input, select, button {
+      display: block;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    #map {
+      height: 400px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Book Now</h1>
+  </header>
+  
+  <main>
+    <section id="customer-info">
+      <h2>Customer Information</h2>
+      <form id="orderForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+        
+        <label for="phone">Phone:</label>
+        <input type="text" id="phone" name="phone" required>
+        
+        <label for="additional-phone">Additional Phone:</label>
+        <input type="text" id="additional-phone" name="additional-phone">
+        
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        
+        <h2>Type of Service</h2>
+        <select id="service-type" name="service-type" required>
+          <option value="furniture-general">Furniture & General Items</option>
+          <option value="house-removals">House Removals</option>
+          <option value="moving-flats">Moving Flats or Apartment</option>
+          <option value="storage-pickup">Pickup from Storage</option>
+          <option value="office-moves">Office Moves</option>
+        </select>
+        
+        <label for="lift">Does Your Apartment Have a Lift?</label>
+        <select id="lift" name="lift" required>
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+        </select>
+        
+        <h2>Furniture & Items</h2>
+        <label for="item">Item:</label>
+        <input type="text" id="item" name="item">
+        
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" name="quantity" min="1">
+        
+        <button type="button" onclick="addItem()">Add to List</button>
+        
+        <div id="item-list">
+          <h3>Item List</h3>
+          <!-- Items will be listed here -->
+        </div>
+        
+        <h2>Estimated Van Size</h2>
+        <div id="van-size">
+          <!-- Estimated van size will be shown here -->
+        </div>
+        
+        <h2>Van Size Selection</h2>
+        <input type="radio" id="small-van" name="van-size" value="small" required>
+        <label for="small-van">Small Van</label>
+        
+        <input type="radio" id="medium-van" name="van-size" value="medium" required>
+        <label for="medium-van">Medium Van</label>
+        
+        <input type="radio" id="large-van" name="van-size" value="large" required>
+        <label for="large-van">Large Van</label>
+        
+        <h2>Pickup and Delivery</h2>
+        <label for="pickup-location">Pickup Location:</label>
+        <input type="text" id="pickup-location" name="pickup-location" required>
+        
+        <label for="delivery-location">Delivery Location:</label>
+        <input type="text" id="delivery-location" name="delivery-location" required>
+        
+        <label for="date-time">Date and Time:</label>
+        <input type="datetime-local" id="date-time" name="date-time" required>
+        
+        <h2>Warning</h2>
+        <p>If an item is not able to fit through the door, we won’t dismantle it. It is your responsibility to ensure your furniture fits through the door.</p>
+        
+        <h2>Price Calculation</h2>
+        <!-- Implement price calculation logic here -->
+        
+        <label for="terms">
+          <input type="checkbox" id="terms" name="terms" required>
+          I agree to the Terms of Service
+        </label>
+        
+        <h2>Summary and Confirmation</h2>
+        <div id="summary">
+          <!-- Order summary will be displayed here -->
+        </div>
+        
+        <button type="submit">Book Now</button>
+      </form>
+    </section>
+  </main>
+  
+  <footer>
+    <!-- Footer content -->
+  </footer>
+  
+  <script>
+    // JavaScript to handle item list and van size estimation
+    let itemList = [];
+    
+    function addItem() {
+      const item = document.getElementById('item').value;
+      const quantity = document.getElementById('quantity').value;
+      
+      if (item && quantity) {
+        itemList.push({ item, quantity });
+        displayItemList();
+        estimateVanSize();
+      }
+    }
+    
+    function displayItemList() {
+      const itemListDiv = document.getElementById('item-list');
+      itemListDiv.innerHTML = '<h3>Item List</h3>';
+      itemList.forEach(({ item, quantity }) => {
+        itemListDiv.innerHTML += `<p>${item} * ${quantity}</p>`;
+      });
+    }
+    
+    function estimateVanSize() {
+      // Logic to estimate van size based on itemList
+      const vanSizeDiv = document.getElementById('van-size');
+      // Example logic:
+      if (itemList.length <= 5) {
+        vanSizeDiv.innerHTML = 'Estimated Van Size: Small';
+      } else if (itemList.length <= 10) {
+        vanSizeDiv.innerHTML = 'Estimated Van Size: Medium';
+      } else {
+        vanSizeDiv.innerHTML = 'Estimated Van Size: Large';
+      }
+    }
+    
+    document.getElementById('orderForm').onsubmit = function(event) {
+      event.preventDefault();
+      displaySummary();
+      // Further logic to handle form submission, such as sending data to server
+    }
+    
+    function displaySummary() {
+      const summaryDiv = document.getElementById('summary');
+      summaryDiv.innerHTML = '<h3>Order Summary</h3>';
+      // Populate with form data and itemList
+      // Example:
+      summaryDiv.innerHTML += `<p>Name: ${document.getElementById('name').value}</p>`;
+      summaryDiv.innerHTML += `<p>Phone: ${document.getElementById('phone').value}</p>`;
+      summaryDiv.innerHTML += `<p>Additional Phone: ${document.getElementById('additional-phone').value}</p>`;
+      summaryDiv.innerHTML += `<p>Email: ${document.getElementById('email').value}</p>`;
+      summaryDiv.innerHTML += `<p>Service Type: ${document.getElementById('service-type').value}</p>`;
+      summaryDiv.innerHTML += `<p>Apartment Lift: ${document.getElementById('lift').value}</p>`;
+      itemList.forEach(({ item, quantity }) => {
+        summaryDiv.innerHTML += `<p>${item} * ${quantity}</p>`;
+      });
+      summaryDiv.innerHTML += `<p>Van Size: ${document.querySelector('input[name="van-size"]:checked').value}</p>`;
+      summaryDiv.innerHTML += `<p>Pickup Location: ${document.getElementById('pickup-location').value}</p>`;
+      summaryDiv.innerHTML += `<p>Delivery Location: ${document.getElementById('delivery-location').value}</p>`;
+      summaryDiv.innerHTML += `<p>Date and Time: ${document.getElementById('date-time').value}</p>`;
+    }
+
+    function initAutocomplete() {
+      const pickupInput = document.getElementById('pickup-location');
+      const deliveryInput = document.getElementById('delivery-location');
+      new google.maps.places.Autocomplete(pickupInput);
+      new google.maps.places.Autocomplete(deliveryInput);
+    }
+    
+    window.onload = function() {
+      initAutocomplete();
+    };
+  </script>
+</body>
+</html>

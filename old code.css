@@ -1,0 +1,109 @@
+.testimonials {
+    width: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.testimonial-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #999999;
+    height: 380px;
+    width: 855px;
+    border-radius: 20px;
+    padding: 40px;
+    gap: 40px;
+    margin-bottom: 80px;
+}
+
+.testimonial-box-right h2 {
+    font-weight: bold;
+    color: #333;
+    padding-left: 20px;
+}
+
+.testimonial-box-right p {
+    color: #2D2926;
+}
+
+.testimonial-box-right span {
+    color: #E03C31;
+    font-weight: bold;
+}
+
+.testimonial-box-left img {
+    height: 338px;
+    width: 223px;
+    border-radius: 10px;
+}
+
+.slider {
+    height: 40px;
+    width: 40px;
+}
+
+.slider-left {
+    padding-right: 50px;
+}
+
+.slider-right {
+    padding-left: 50px;
+}
+
+
+
+
+
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 25%;
+    padding-top: 25px;
+    /* margin-right: 200px; */
+}
+
+.nav_bar {
+    list-style: none;
+}
+
+.nav_bar li {
+    display: inline-block;
+    padding: 0px 30px;
+}
+
+.nav_bar li a {
+    transition: all 0.3s ease 0s;
+}
+
+.nav_bar li a:hover {
+    color: #C73659;
+}
+
+.nav_bar .main a:hover {
+    color: #A91D3A;
+}
+
+.cta {
+    padding: 9px 25px;
+    border-radius: 11px;
+    border: none;
+    background-color: rgba(169, 29, 58, 1);
+    /* background-color: #A91D3A; */
+    color: #EEEEEE;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease 0s;
+    text-align: center;
+}
+
+.cta:hover {
+    background-color: rgba(169, 29, 58, 0.8);
+}

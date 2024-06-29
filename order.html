@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Book Now</title>
+    <link rel="stylesheet" type= 'text/css' href="./maps.css">
+    <script src="./maps.js"></script>
+</head>
+<body>
+    <div id="map">
+        <!-- Map goes here -->
+    </div>
+
+    <h1>Calculate Delivery Cost</h1>
+    <div id="address_search_box">
+        Pickup: <input id="pickup" type="text" placeholder="Enter Pickup Address"><br>
+        Delivery: <input id="delivery" type="text" placeholder="Enter Delivery Address">
+    </div>
+
+    <!-- <form id="deliveryForm">
+        Pickup: <input type="text" id="pickup" required><br>
+        Delivery: <input type="text" id="delivery" required><br>
+        <button type="button" onclick="calculateCost()">Calculate Cost</button>
+    </form> -->
+
+    <div id="result"></div>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnydqYaIdafxJnQP1aaLYhwQllP410UN4&libraries=places%callback=initMap&v=weekly"></script>
+</body>
+</html>

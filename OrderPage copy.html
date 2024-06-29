@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Get a Van - Calculate Delivery Cost</title>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnydqYaIdafxJnQP1aaLYhwQllP410UN4&libraries=places"></script>
+  <style>
+    #map {
+      height: 400px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <h1>Calculate Delivery Cost</h1>
+  <form id="deliveryForm">
+    Pickup Location: <input type="text" id="pickup" required><br>
+    Delivery Location: <input type="text" id="delivery" required><br>
+    <button type="button" onclick="calculateCost()">Calculate Cost</button>
+  </form>
+
+  <div style="width: 500px; height: 500px;" id="map"></div>
+
+  <script>
+    let map;
+    let pickupMarker;
+    let deliveryMarker;
+    const pricePerMile = 2.50;
+
+    function initMap() {
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: { lat: 0, lng: 0 },
+        zoom: 2,
+      });
+    }
+
+    function calculateCost() {
+      const pickup = document.getElementById('pickup').value;
+      const delivery = document.getElementById('delivery').value;
+
+      const service = new google.maps.DistanceMatrixService();
+      service.getDistanceMatrix(
+        {
+          origins: [pickup],
+          destinations: [delivery],
+          travelMode: 'DRIVING',
+          unitSystem: google.maps.UnitSystem.IMPERIAL,
+        },
+        callback
+      );
+
+      function callback(response, status) {
+        if (status == 'OK') {
+          const origins = response.originAddresses;
+          const destinations = response.destinationAddresses;
+
+          const bounds = new google.maps.LatLngBounds();
+          for (let i = 0; i < origins.length; i++) {
+            const results = response.rows[i].elements;
+            for (let j = 0; j < destinations.length; j++) {
+              const element = results[j];
+              const distance = element.distance.text;
+              const duration = element.duration.text;
+              const distanceValue = element.distance.value / 1609.34; // Convert meters to miles
+              const cost = (distanceValue * pricePerMile).toFixed(2);
+
+              document.getElementById('result').innerHTML =
+                `Distance: ${distance} <br>Duration: ${duration} <br>Total Cost: $${cost}`;
+
+              const geocoder = new google.maps.Geocoder();
+              geocoder.geocode({ address: pickup }, function (results, status) {
+                if (status === 'OK') {
+                  if (pickupMarker) {
+                    pickupMarker.setMap(null);
+                  }
+                  map.setCenter(results[0].geometry.location);
+                  pickupMarker = new google.maps.Marker({
+                    map: map,
+                    position: results[0].geometry.location,
+                    label: 'P',
+                  });
+                  bounds.extend(results[0].geometry.location);
+                } else {
+                  alert('Geocode was not successful for the following reason: ' + status);
+                }
+              });
+
+              geocoder.geocode({ address: delivery }, function (results, status) {
+                if (status === 'OK') {
+                  if (deliveryMarker) {
+                    deliveryMarker.setMap(null);
+                  }
+                  deliveryMarker = new google.maps.Marker({
+                    map: map,
+                    position: results[0].geometry.location,
+                    label: 'D',
+                  });
+                  bounds.extend(results[0].geometry.location);
+                  map.fitBounds(bounds);
+                } else {
+                  alert('Geocode was not successful for the following reason: ' + status);
+                }
+              });
+            }
+          }
+        } else {
+          alert('Error: ' + status);
+        }
+      }
+    }
+
+    window.onload = initMap;
+  </script>
+</body>
+</html>
